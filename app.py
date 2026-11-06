@@ -55,5 +55,11 @@ def history():
         error_message = "Unable to retrieve scan history at this time. Please try again later."
     return render_template('history.html', scans=scan_history, error_message=error_message)
 
+
+
+@app.route("/health", methods=["GET"])
+def health():
+    return {"status": "ok"}, 200
+
 if __name__ == '__main__':
     app.run(debug=True)

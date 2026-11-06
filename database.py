@@ -6,7 +6,10 @@ from datetime import datetime,timezone
 load_dotenv()
 
 def get_db_connection():
-    connection = psycopg.connect(
+     if os.getenv("DB_SECRET_ARN"):
+        from cloud_database import get_cloud_connection
+        return get_cloud_connection()
+     connection = psycopg.connect(
         host=os.getenv("DB_HOST"),
         port=os.getenv("DB_PORT"),
         dbname=os.getenv("DB_NAME"),
@@ -14,8 +17,7 @@ def get_db_connection():
         password=os.getenv("DB_PASSWORD"),
         connect_timeout=5
     )
-
-    return connection
+     return connection
 
 
 def save_email_to_db(score, risk_level, indicators_count):

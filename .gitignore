@@ -27,3 +27,14 @@ Thumbs.db
 
 # Local log files
 *.log
+
+
+# Deployment packages
+/deploy/
+
+# Terraform local and sensitive files
+**/.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+*.tfvars.json
