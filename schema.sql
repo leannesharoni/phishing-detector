@@ -1,0 +1,7 @@
+CREATE TABLE IF NOT EXISTS scans (
+    id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    scan_time TIMESTAMPTZ NOT NULL,
+    risk_score INTEGER NOT NULL,
+    risk_level VARCHAR(10) NOT NULL,
+    indicators_count INTEGER NOT NULL
+);

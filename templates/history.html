@@ -1,0 +1,82 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Scan History</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6fb;
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+
+        a {
+            color: #315bdc;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="card">
+        <h1>Scan History</h1>
+        
+        {% if error_message %}
+            <p style="color: red;">{{ error_message }}</p>
+        {% endif %}
+
+        <a href="/">Back to Scanner</a>
+
+        <p>Showing the latest 20 email scans.</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Scan Time</th>
+                    <th>Risk Score</th>
+                    <th>Risk Level</th>
+                    <th>Indicators</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for scan in scans %}
+                <tr>
+                    <td>{{ scan[0] }}</td>
+                    <td>{{ scan[1] }}</td>
+                    <td>{{ scan[2] }}</td>
+                    <td>{{ scan[3] }}</td>
+                    <td>{{ scan[4] }}</td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="5">No scans found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

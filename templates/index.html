@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Email Phishing Detector</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6fb;
+            max-width: 750px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px #ddd;
+            margin-bottom: 20px;
+        }
+        button {
+            background-color: #315bdc;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        .high {
+            color: #c62828;
+        }
+        .medium {
+            color: #c78100;
+        }
+        .low {
+            color: #17834b;
+        }
+        li {
+            margin-bottom: 8px;
+            overflow-wrap: anywhere;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="card">
+        <h1>Email Phishing Detector</h1>
+
+        <p>Upload an email text file to analyze
+        potential phishing indicators.</p>
+
+        <form method="POST" enctype="multipart/form-data">
+            <input
+                type="file"
+                name="email_file"
+                accept=".txt"
+                required
+            >
+
+            <button type="submit">Analyze Email</button>
+        </form>
+
+        <p>
+            <a href="/history">View Scan History</a>
+        </p>
+
+        {% if error_message %}
+            <p class="high">{{ error_message}}</p>
+        {% endif %}
+    </div>
+
+    {% if result %}
+    <div class="card">
+
+        <h2>Analysis Results</h2>
+
+        <p>
+            Risk Score:
+            <strong>{{ result.score }}/100</strong>
+        </p>
+
+        <p>
+            Risk Level:
+            <strong class="{{ result.risk_level | lower }}">
+                {{ result.risk_level }}
+            </strong>
+        </p>
+
+        <h3>Suspicious Words</h3>
+        <ul>
+            {% for word in result.words %}
+                <li>{{ word }}</li>
+            {% else %}
+                <li>No suspicious words found.</li>
+            {% endfor %}
+        </ul>
+
+        <h3>Suspicious Links</h3>
+        <ul>
+            {% for link in result.links %}
+                <li>{{ link }}</li>
+            {% else %}
+                <li>No suspicious links found.</li>
+            {% endfor %}
+        </ul>
+
+        <h3>Spoofed Sender</h3>
+        <ul>
+            {% for sender in result.senders %}
+                <li>{{ sender }}</li>
+            {% else %}
+                <li>No suspicious sender detected.</li>
+            {% endfor %}
+        </ul>
+
+        <h3>Suspicious Attachments</h3>
+        <ul>
+            {% for attachment in result.attachments %}
+                <li>{{ attachment }}</li>
+            {% else %}
+                <li>No suspicious attachments found.</li>
+            {% endfor %}
+        </ul>
+
+    </div>
+    {% endif %}
+
+</body>
+</html>
+
