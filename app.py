@@ -1,6 +1,6 @@
 from flask import Flask, request, render_template
 from werkzeug.exceptions import RequestEntityTooLarge
-from detector import analyze_email
+from cache import analyze_email_with_cache
 from database import save_email_to_db, get_scan_history
 import psycopg
 
@@ -27,7 +27,7 @@ def home():
                 if not email_content.strip():
                     error_message = "The uploaded file is empty. Please provide a valid email content." 
                 else:
-                    result = analyze_email(email_content)
+                    result = analyze_email_with_cache(email_content)
                     try:
                         save_email_to_db(result['score'], result['risk_level'], result['indicators_count'])
                     except psycopg.Error:

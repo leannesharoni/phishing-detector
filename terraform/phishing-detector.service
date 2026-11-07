@@ -11,6 +11,7 @@ Environment="DB_SECRET_ARN=${db_secret_arn}"
 Environment="DB_HOST=${db_host}"
 Environment="DB_NAME=phishing_detector"
 Environment="AWS_REGION=eu-north-1"
+Environment="REDIS_URL=${redis_url}"
 ExecStart=/opt/phishing-detector/.venv/bin/gunicorn --workers 2 --bind 0.0.0.0:5000 --error-logfile /var/log/phishing-error.log app:app
 Restart=on-failure
 RestartSec=5

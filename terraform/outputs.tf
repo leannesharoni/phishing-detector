@@ -33,3 +33,11 @@ output "rds_master_secret_arn" {
   description = "ARN of the RDS master credentials secret"
   value       = aws_db_instance.main.master_user_secret[0].secret_arn
 }
+
+
+output "redis_endpoint" {
+  description = "TLS Redis endpoint for application caching"
+  value = var.enable_redis_cache ? (
+    "rediss://${aws_elasticache_replication_group.redis[0].primary_endpoint_address}:6379"
+  ) : null
+}

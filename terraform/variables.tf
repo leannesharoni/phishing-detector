@@ -9,3 +9,10 @@ variable "enable_application" {
   type        = bool
   default     = false
 }
+
+
+variable "enable_redis_cache" {
+  description = "Enable the optional ElastiCache Redis bonus"
+  type        = bool
+  default     = false
+}

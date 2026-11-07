@@ -16,13 +16,19 @@ resource "aws_instance" "app" {
     bucket_name = aws_s3_bucket.deployment.bucket
     aws_region  = "eu-north-1"
 
+
     service_content_b64 = base64encode(templatefile(
       "${path.module}/phishing-detector.service",
       {
         db_secret_arn = var.app_db_secret_arn
         db_host       = aws_db_instance.main.address
+
+        redis_url = var.enable_redis_cache ? (
+          "rediss://${aws_elasticache_replication_group.redis[0].primary_endpoint_address}:6379"
+        ) : ""
       }
     ))
+
 
     cwagent_config_b64 = filebase64("${path.module}/cloudwatch-agent.json")
   })

@@ -9,6 +9,7 @@ files = [
     "app.py",
     "detector.py",
     "database.py",
+    "cache.py",
     "cloud_database.py",
     "requirements-cloud.txt",
     "templates/index.html",
