@@ -5,7 +5,7 @@ data "aws_ssm_parameter" "amazon_linux" {
 
 # Two EC2 application servers
 resource "aws_instance" "app" {
-  count = 2
+  count = var.enable_application ? 2 : 0
 
   ami                  = data.aws_ssm_parameter.amazon_linux.value
   instance_type        = "t3.micro"
@@ -53,10 +53,18 @@ resource "aws_instance" "app" {
   }
 
 
+  lifecycle {
+    precondition {
+      condition     = length(trimspace(var.app_db_secret_arn)) > 0
+      error_message = "Application deployment requires app_db_secret_arn."
+    }
+  }
+
   depends_on = [
     aws_s3_object.app_package,
     aws_iam_role_policy.read_app_package,
     aws_iam_role_policy.write_logs,
-    aws_iam_role_policy.read_db_secret
+    aws_iam_role_policy.read_db_secret,
+    aws_iam_role_policy_attachment.ssm_access
   ]
 }

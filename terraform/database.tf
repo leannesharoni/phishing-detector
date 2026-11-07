@@ -16,8 +16,10 @@ resource "aws_db_subnet_group" "main" {
 resource "aws_db_instance" "main" {
   identifier = "phishing-postgres"
 
-  engine         = "postgres"
-  instance_class = "db.t3.micro"
+  engine                   = "postgres"
+  engine_version           = "17.11"
+  engine_lifecycle_support = "open-source-rds-extended-support-disabled"
+  instance_class           = "db.t3.micro"
 
   allocated_storage = 20
   storage_type      = "gp2"

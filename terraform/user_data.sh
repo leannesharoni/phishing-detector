@@ -7,7 +7,11 @@ exec > >(tee -a /var/log/phishing-setup.log) 2>&1
 echo "Starting Phishing Detector setup"
 
 # Install tools needed by our application
-dnf install -y python3.11 unzip awscli amazon-cloudwatch-agent
+dnf install -y python3.11 python3.11-pip unzip awscli amazon-cloudwatch-agent
+
+# Verify Python and pip are available
+python3.11 --version
+python3.11 -m pip --version
 
 # Create the application error log file
 touch /var/log/phishing-error.log

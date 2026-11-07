@@ -4,7 +4,7 @@ import os
 import boto3
 import psycopg
 
-
+# Establishes a connection to the PostgreSQL database.
 def get_cloud_connection():
     secret_arn = os.environ["DB_SECRET_ARN"]
     region = os.environ.get("AWS_REGION", "eu-north-1")

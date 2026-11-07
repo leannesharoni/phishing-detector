@@ -1,5 +1,8 @@
+
 # Application Load Balancer
 resource "aws_lb" "app" {
+  count = var.enable_application ? 1 : 0
+
   name               = "phishing-app-alb"
   internal           = false
   load_balancer_type = "application"
@@ -20,6 +23,8 @@ resource "aws_lb" "app" {
 
 # Group of application servers
 resource "aws_lb_target_group" "app" {
+  count = var.enable_application ? 1 : 0
+
   name        = "phishing-app-targets"
   port        = 5000
   protocol    = "HTTP"
@@ -45,21 +50,23 @@ resource "aws_lb_target_group" "app" {
 
 # Register both EC2 instances as targets
 resource "aws_lb_target_group_attachment" "app" {
-  count = 2
+  count = var.enable_application ? 2 : 0
 
-  target_group_arn = aws_lb_target_group.app.arn
+  target_group_arn = aws_lb_target_group.app[0].arn
   target_id        = aws_instance.app[count.index].id
   port             = 5000
 }
 
 # Receive HTTP requests and forward them to EC2
 resource "aws_lb_listener" "http" {
-  load_balancer_arn = aws_lb.app.arn
+  count = var.enable_application ? 1 : 0
+
+  load_balancer_arn = aws_lb.app[0].arn
   port              = 80
   protocol          = "HTTP"
 
   default_action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.app.arn
+    target_group_arn = aws_lb_target_group.app[0].arn
   }
 }

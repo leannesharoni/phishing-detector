@@ -17,7 +17,6 @@ def check_suspicious_words(email_content):
 
 
 # Checks for suspicious links in an email content and returns a list of detected links
-
 def check_suspicious_links(email_content):
     links = re.findall(r'https?://[^\s<>"]+', email_content)
 
@@ -158,7 +157,7 @@ def check_suspicious_attachments(email_content):
                     break
     return suspicious_attachments
 
-
+# Analyzes the email content and returns a dictionary containing the analysis results
 def analyze_email(email_content):
     detected_words = check_suspicious_words(email_content)
     detected_links = check_suspicious_links(email_content)

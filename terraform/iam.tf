@@ -89,8 +89,9 @@ resource "aws_iam_role_policy" "write_logs" {
 
 # Allow EC2 to read only the application database secret
 resource "aws_iam_role_policy" "read_db_secret" {
-  name = "phishing-read-db-secret"
-  role = aws_iam_role.app.id
+  count = var.enable_application ? 1 : 0
+  name  = "phishing-read-db-secret"
+  role  = aws_iam_role.app.id
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -109,3 +110,7 @@ resource "aws_iam_role_policy" "read_db_secret" {
   })
 }
 
+resource "aws_iam_role_policy_attachment" "ssm_access" {
+  role       = aws_iam_role.app.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+}

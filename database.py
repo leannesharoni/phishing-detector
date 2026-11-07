@@ -34,8 +34,6 @@ def save_email_to_db(score, risk_level, indicators_count):
             )
 
 
-
-
 def get_scan_history():
         with get_db_connection() as connection:
             with connection.cursor() as cursor:

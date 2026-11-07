@@ -1,4 +1,5 @@
 resource "aws_cloudwatch_dashboard" "main" {
+  count          = var.enable_application ? 1 : 0
   dashboard_name = "phishing-detector-monitoring"
 
   dashboard_body = jsonencode({
@@ -36,7 +37,7 @@ resource "aws_cloudwatch_dashboard" "main" {
           stat   = "Sum"
 
           metrics = [
-            ["AWS/ApplicationELB", "RequestCount", "LoadBalancer", aws_lb.app.arn_suffix]
+            ["AWS/ApplicationELB", "RequestCount", "LoadBalancer", aws_lb.app[0].arn_suffix]
           ]
         }
       },
@@ -54,8 +55,8 @@ resource "aws_cloudwatch_dashboard" "main" {
           stat   = "Sum"
 
           metrics = [
-            ["AWS/ApplicationELB", "HTTPCode_Target_5XX_Count", "LoadBalancer", aws_lb.app.arn_suffix],
-            ["AWS/ApplicationELB", "HTTPCode_ELB_5XX_Count", "LoadBalancer", aws_lb.app.arn_suffix]
+            ["AWS/ApplicationELB", "HTTPCode_Target_5XX_Count", "LoadBalancer", aws_lb.app[0].arn_suffix],
+            ["AWS/ApplicationELB", "HTTPCode_ELB_5XX_Count", "LoadBalancer", aws_lb.app[0].arn_suffix]
           ]
         }
       },
@@ -74,8 +75,8 @@ resource "aws_cloudwatch_dashboard" "main" {
 
           metrics = [
             ["AWS/ApplicationELB", "HealthyHostCount",
-              "LoadBalancer", aws_lb.app.arn_suffix,
-            "TargetGroup", aws_lb_target_group.app.arn_suffix]
+              "LoadBalancer", aws_lb.app[0].arn_suffix,
+            "TargetGroup", aws_lb_target_group.app[0].arn_suffix]
           ]
         }
       }
@@ -85,7 +86,7 @@ resource "aws_cloudwatch_dashboard" "main" {
 
 # High CPU alarm for each EC2 instance
 resource "aws_cloudwatch_metric_alarm" "high_cpu" {
-  count = 2
+  count = var.enable_application ? 2 : 0
 
   alarm_name        = "phishing-high-cpu-${count.index + 1}"
   alarm_description = "EC2 CPU above 80 percent"
@@ -108,6 +109,7 @@ resource "aws_cloudwatch_metric_alarm" "high_cpu" {
 
 # Alarm when fewer than two targets are healthy
 resource "aws_cloudwatch_metric_alarm" "unhealthy_targets" {
+  count             = var.enable_application ? 1 : 0
   alarm_name        = "phishing-unhealthy-targets"
   alarm_description = "Fewer than two healthy EC2 targets"
 
@@ -115,8 +117,8 @@ resource "aws_cloudwatch_metric_alarm" "unhealthy_targets" {
   metric_name = "HealthyHostCount"
 
   dimensions = {
-    LoadBalancer = aws_lb.app.arn_suffix
-    TargetGroup  = aws_lb_target_group.app.arn_suffix
+    LoadBalancer = aws_lb.app[0].arn_suffix
+    TargetGroup  = aws_lb_target_group.app[0].arn_suffix
   }
 
   statistic           = "Minimum"

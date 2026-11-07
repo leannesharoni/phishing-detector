@@ -1,0 +1,14 @@
+From: security@paypa1.example
+To: customer@example.com
+Subject: URGENT: Verify your account immediately
+
+Dear Customer,
+
+Your account has been temporarily suspended.
+
+You must verify your password immediately to avoid permanent account closure.
+
+Click here to verify your account:
+http://192.0.2.10/login
+
+If you do not act within 24 hours, your account will be permanently disabled.

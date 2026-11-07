@@ -38,3 +38,9 @@ Thumbs.db
 *.tfstate.*
 *.tfvars
 *.tfvars.json
+
+# Terraform saved plans
+*.tfplan
+
+*.pem
+*.key
