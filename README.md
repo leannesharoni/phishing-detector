@@ -156,3 +156,33 @@ python -m unittest discover -s tests -v
   or DMARC verification.
 - The built-in Flask server is intended for development,
   not production deployment.
+
+## Bonus: Gmail Add-on
+
+A Gmail add-on was developed using Google Apps Script to analyze emails directly from the Gmail interface.
+
+The add-on:
+- Reads the currently opened email.
+- Detects suspicious phrases, URLs, sender domains, and attachment filenames.
+- Calculates a risk score from 0 to 100.
+- Displays the risk level and detected indicators in the Gmail sidebar.
+- Runs without requiring the AWS infrastructure to be active.
+
+The source code is available in the `gmail-addon/` directory.
+
+### Testing
+
+The add-on was tested with a normal email and a simulated phishing email. The phishing test successfully detected suspicious phrases and an IP-based URL, displaying a High risk level.
+
+### Setup
+
+1. Create a project in Google Apps Script.
+2. Copy `gmail-addon/Code.gs` into the Apps Script editor.
+3. Configure the project manifest using `gmail-addon/appsscript.json`.
+4. Use **Deploy → Test deployments** to install the Gmail add-on.
+5. Open an email in Gmail and select **Phishing Detector** from the sidebar.
+
+### Screenshot
+
+![Gmail Add-on - First Test](screenshots/0901-gmail-addon-phishing-detection.png)
+![Gmail Add-on - Phishing Detection](screenshots/0902-gmail-addon-phishing-detection.png)
