@@ -12,3 +12,5 @@ TO phishing_app;
 GRANT SELECT, INSERT
 ON TABLE public.scans
 TO phishing_app;
+
+GRANT USAGE ON SEQUENCE public.scans_id_seq TO phishing_app;
